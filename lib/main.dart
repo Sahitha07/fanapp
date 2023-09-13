@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'events_detail_page.dart';
 import 'full_screen_image_view.dart';
 import 'news_detail_page.dart';
+import 'dart:math';
+
 
 
 void main() {
@@ -48,14 +51,40 @@ class MyApp extends StatelessWidget {
   }
 }
 class NewsTab extends StatelessWidget {
+  String _generateRandomDate() {
+    final random = Random();
+    final day = random.nextInt(30) + 1; // Generate a random day between 1 and 30
+    final month = random.nextInt(12) + 1; // Generate a random month between 1 and 12
+
+    return '$month/$day/2023'; // Assuming the year is 2023
+  }
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: List.generate(
-          10,
+          19,
               (index) => Column(
             children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Text(
+                      _generateRandomDate(), // Display a random date
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    SizedBox(width: 16), // Add spacing between date and article title
+                    Expanded(
+                      child: Divider(
+                        color: Colors.white,
+                        thickness: 1,
+                        height: 0,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               ListTile(
                 title: Text(
                   'BTS News Article $index',
@@ -65,7 +94,6 @@ class NewsTab extends StatelessWidget {
                   'Details about the news article $index',
                   style: TextStyle(color: Colors.white),
                 ),
-
                 onTap: () {
                   // Navigate to the NewsDetailPage
                   Navigator.push(
@@ -74,7 +102,48 @@ class NewsTab extends StatelessWidget {
                       builder: (context) => NewsDetailPage(
                         title: 'BTS News Article $index',
                         content: 'Details about the news article $index',
-                        link: 'https://example.com/article', // Provide the actual link here
+                        link: 'https://example.com/article',
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}// Provide the actual link here
+
+class EventsTab extends StatelessWidget {
+  final List<String> eventNames = [
+    "RM's celebrates his 29th birthday by writing a letter to ARMY",
+    "V releases his solo debut album 'Layover'",
+    "Suchwita with V"
+    // Add more events if needed
+  ];
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: List.generate(
+          eventNames.length,
+              (index) => Column(
+            children: [
+              ListTile(
+                title: Text(
+                  eventNames[index],
+                  style: TextStyle(color: Colors.white),
+                ),
+
+                onTap: () {
+                  // Navigate to the EventDetailsPage
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EventDetailsPage(
+                        eventName: eventNames[index],
                       ),
                     ),
                   );
@@ -87,51 +156,12 @@ class NewsTab extends StatelessWidget {
                 endIndent: 16,
               ),
             ],
-              ),
+          ),
         ),
       ),
     );
   }
 }
-class EventsTab extends StatelessWidget {
-  final List<String> youtubeLinks = [
-    'https://www.youtube.com/user/ibighit',
-    'https://www.youtube.com/user/BANGTANTV',
-    // Add more YouTube links here
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: youtubeLinks.length,
-      itemBuilder: (context, index) {
-        final link = youtubeLinks[index];
-        return Card(
-          margin: EdgeInsets.all(8),
-          color: Color.fromRGBO(255, 255, 255, 0.3),
-          child: ListTile(
-            title: Text(
-              'BTS YouTube Channel $index',
-              style: TextStyle(color: Colors.white),
-            ),
-            subtitle: Text(
-              link,
-              style: TextStyle(color: Colors.white),
-            ),
-            onTap: () async {
-              if (await canLaunch(link)) {
-                await launch(link);
-              } else {
-                throw 'Could not launch $link';
-              }
-            },
-          ),
-        );
-      },
-    );
-  }
-}
-
 class GalleryTab extends StatelessWidget {
   final List<String> imagePaths = [
     'assets/bts1.jpeg',
@@ -159,10 +189,7 @@ class GalleryTab extends StatelessWidget {
               MaterialPageRoute(
                 builder: (context) => FullScreenImageView(imagePath: imagePath),
               ),
-            );
-
-
-            // Add functionality to view the image in full screen
+            );// Add functionality to view the image in full screen
           },
           child: Card(
             color: Color.fromRGBO(255, 255, 255, 0.3),
@@ -176,7 +203,4 @@ class GalleryTab extends StatelessWidget {
     );
   }
 }
-
-
-
 
