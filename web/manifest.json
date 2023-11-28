@@ -1,6 +1,6 @@
 {
-    "name": "fanhomepage",
-    "short_name": "fanhomepage",
+    "name": "fan_project",
+    "short_name": "fan_project",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -1,4 +1,4 @@
-# fanhomepage
+# fan_project
 
 A new Flutter project.
 
